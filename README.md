@@ -11,6 +11,8 @@
 
 Free web search via **Gemini grounding + Google OAuth** — no paid API key required.
 
+**You need:** a Google account (Google One AI Pro recommended — the free tier is geo-restricted) + a network that can reach Google services + Node.js 18+.
+
 It piggybacks on Google's Cloud Code Assist API. You log in once with a Google account, and afterward you can send search queries that return grounded answers with real source URLs.
 
 ## Who can use it

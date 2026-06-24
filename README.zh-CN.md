@@ -11,6 +11,8 @@
 
 通过 **Gemini grounding + Google OAuth** 实现免费网页搜索 —— 不需要付费 API key。
 
+**你需要：** 一个 Google 账号（推荐 Google One AI Pro 订阅，免费版有地区限制）+ 能访问 Google 服务的网络环境 + Node.js 18+。
+
 它借用 Google 的 Cloud Code Assist API。你只需用 Google 账号登录一次，之后就能发送搜索查询，返回带真实来源 URL 的接地（grounded）答案。
 
 ## 谁能用
