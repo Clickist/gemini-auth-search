@@ -5,7 +5,7 @@
 > **⚡ One-line install (Claude Code / agent):** copy this, paste to your agent —
 >
 > ```
-> 帮我安装这个系统级的 Claude Code skill（通过 Gemini OAuth 做免费 web search，不需要 API key）：https://github.com/Clickist/gemini-auth-search
+> Install this as a system-level Claude Code skill for free web search via Gemini OAuth (no API key needed): https://github.com/Clickist/gemini-auth-search
 > ```
 
 
