@@ -1,5 +1,7 @@
 # Gemini Auth Search
 
+**[English](README.md) | [中文](README.zh-CN.md)**
+
 > **⚡ One-line install (Claude Code / agent):** copy this, paste to your agent —
 >
 > ```
@@ -9,7 +11,7 @@
 
 Free web search via **Gemini grounding + Google OAuth** — no paid API key required.
 
-It piggybacks on Google's Cloud Code Assist API (the same free OAuth path that `gemini auth login` and [oh-my-pi](https://github.com/can1357/oh-my-pi) use). You log in once with a Google account, and afterward you can send search queries that return grounded answers with real source URLs.
+It piggybacks on Google's Cloud Code Assist API. You log in once with a Google account, and afterward you can send search queries that return grounded answers with real source URLs.
 
 ## Who can use it
 
@@ -59,7 +61,7 @@ Be aware of these limits before depending on it:
 
 ## How it works (one paragraph)
 
-You log in via Google's OAuth using the Antigravity app credentials (which are public — embedded in oh-my-pi's open source). The OAuth flow provisions a Cloud Code Assist project on your account. You then call `streamGenerateContent` with `{ googleSearch: {} }` as a tool; Gemini uses Google Search internally and returns the answer plus `groundingMetadata` containing the source URLs and the queries it actually ran.
+You log in via Google's OAuth using the Antigravity app credentials (public OAuth client-app credentials, base64-encoded in the source). The OAuth flow provisions a Cloud Code Assist project on your account. You then call `streamGenerateContent` with `{ googleSearch: {} }` as a tool; Gemini uses Google Search internally and returns the answer plus `groundingMetadata` containing the source URLs and the queries it actually ran.
 
 ## Requirements
 
@@ -85,10 +87,6 @@ curl -o ~/.claude/skills/gemini-grounding-search/gemini-search.mjs \
 After that, the skill `gemini-grounding-search` is available system-wide. Or just paste the one-line prompt at the top of this README to your agent and let it do the install for you.
 
 > The script lives next to `SKILL.md` so it's co-located — Claude Code reads the skill, then runs `node gemini-search.mjs "<query>"` via Bash. First search triggers the browser OAuth login.
-
-## Credit
-
-The OAuth flow, project discovery, and grounding logic are reverse-engineered from and inspired by [oh-my-pi](https://github.com/can1357/oh-my-pi) by [@can1357](https://github.com/can1357). This project extracts that mechanism into a standalone, dependency-free implementation.
 
 ## License
 
