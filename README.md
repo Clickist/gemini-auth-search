@@ -11,19 +11,19 @@
 
 Free web search via **Gemini grounding + Google OAuth** — no paid API key required.
 
-**You need:** a Google account (Google One AI Pro recommended — the free tier is geo-restricted) + a network that can reach Google services + Node.js 18+.
+**You need:** a Google account + a network that can reach Google services + Node.js 18+.
 
 It piggybacks on Google's Cloud Code Assist API. You log in once with a Google account, and afterward you can send search queries that return grounded answers with real source URLs.
 
 ## Who can use it
 
-You need a Google account that's recognized by the **Antigravity** OAuth app:
+Any Google account that the Antigravity OAuth app grants a usable tier to. The implementation uses your account's **actual** tier (the one `loadCodeAssist` reports), not a hardcoded one:
 
-- ✅ **Google One AI Pro** subscribers — confirmed working. The Antigravity app recognizes your subscription (`paidTier: g1-pro-tier`) and grants usage.
-- ✅ Accounts in supported regions for the free tier.
-- ⚠️ Accounts in **unsupported locations** won't get free-tier quota, but the Antigravity/Pro path still works if you have a Pro subscription.
+- ✅ Accounts in regions where the service is available — free tier works.
+- ✅ Accounts with a paid subscription (e.g. Google One AI Pro) — the standard tier works, including from regions where the free tier isn't offered.
+- ⚠️ In regions where the free tier isn't available, a free account has no usable quota; a subscription unlocks it.
 
-> The alternate Gemini CLI OAuth app is geo-restricted for the free tier and often returns "not eligible in your location". **The Antigravity app is the reliable path** — this project uses it by default.
+> The project uses the **Antigravity** OAuth app rather than the Gemini CLI app. Both hit the same Cloud Code Assist backend, but the Antigravity app recognizes paid subscriptions and is the path confirmed working end-to-end.
 
 ## What you get
 
@@ -59,7 +59,7 @@ Be aware of these limits before depending on it:
 - **Grounding can't be forced via config.** `dynamicRetrievalConfig` / `MODE_DYNAMIC` are rejected by this internal endpoint. The reference implementation uses a system prompt to nudge Gemini toward searching.
 - **Gemini may skip the search** and answer from memory for questions it thinks it knows (e.g. "what day is it"), returning empty sources. The reference implementation documents this check — treat empty sources as "unverified answer".
 - **Sources come only from Google Search.** The `googleSearch` tool is Google-only; there's no Brave/Bing option through this path.
-- **Rate limits apply.** Even on Pro, rapid-fire requests get throttled. The correct `User-Agent` header (`antigravity/hub/...`) unlocks more generous limits — the implementation sets it for you.
+- **Rate limits apply.** Rapid-fire requests get throttled. The correct `User-Agent` header (`antigravity/hub/...`) unlocks more generous limits — the implementation sets it for you.
 
 ## How it works (one paragraph)
 
@@ -68,7 +68,7 @@ You log in via Google's OAuth using the Antigravity app credentials (public OAut
 ## Requirements
 
 - Node.js 18+ (uses built-in `fetch`, `http`, `crypto`).
-- A Google account (Pro subscription recommended — see above).
+- A Google account with a usable tier (see "Who can use it" above).
 - A browser for the one-time OAuth login.
 
 ## Use as a Claude Code skill

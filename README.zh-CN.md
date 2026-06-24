@@ -11,19 +11,19 @@
 
 通过 **Gemini grounding + Google OAuth** 实现免费网页搜索 —— 不需要付费 API key。
 
-**你需要：** 一个 Google 账号（推荐 Google One AI Pro 订阅，免费版有地区限制）+ 能访问 Google 服务的网络环境 + Node.js 18+。
+**你需要：** 一个 Google 账号 + 能访问 Google 服务的网络环境 + Node.js 18+。
 
 它借用 Google 的 Cloud Code Assist API。你只需用 Google 账号登录一次，之后就能发送搜索查询，返回带真实来源 URL 的接地（grounded）答案。
 
 ## 谁能用
 
-你需要一个被 **Antigravity** OAuth 应用识别的 Google 账号：
+任何被 Antigravity OAuth 应用授予可用 tier 的 Google 账号。实现用的是你账号**实际**的 tier（`loadCodeAssist` 报告的那个），而不是写死的：
 
-- ✅ **Google One AI Pro** 订阅者 —— 实测可用。Antigravity 应用能识别你的订阅（`paidTier: g1-pro-tier`）并授予使用权限。
-- ✅ 处于免费版支持地区的账号。
-- ⚠️ 处于**不支持地区**的账号拿不到免费版配额，但只要有 Pro 订阅，Antigravity / Pro 这条路仍然能用。
+- ✅ 服务可用地区的账号 —— 免费 tier 即可使用。
+- ✅ 有付费订阅的账号（如 Google One AI Pro）—— standard tier 可用，包括免费 tier 不提供的地区。
+- ⚠️ 在免费 tier 不可用的地区，免费账号没有可用配额；订阅可以解锁。
 
-> 另一个 Gemini CLI OAuth 应用在免费版上有地区限制，经常返回"你所在地区不可用"。**Antigravity 应用才是可靠的路径** —— 本项目默认用它。
+> 本项目用 **Antigravity** OAuth 应用，而非 Gemini CLI 应用。两者都走同一个 Cloud Code Assist 后端，但 Antigravity 应用能识别付费订阅，是经端到端验证可用的路径。
 
 ## 你能得到什么
 
@@ -59,7 +59,7 @@ node gemini-search.mjs "你的搜索查询"
 - **grounding 无法通过配置强制。** `dynamicRetrievalConfig` / `MODE_DYNAMIC` 在这个内部端点会被拒绝。参考实现用 system prompt 来引导 Gemini 去搜索。
 - **Gemini 可能跳过搜索**，对它自认为知道的问题直接凭记忆作答（比如"今天几号"），返回空的来源。参考实现里有这个检查 —— 把空来源当作"未验证的答案"对待。
 - **来源只有 Google Search。** `googleSearch` 工具是 Google 独占的；这条路没有 Brave / Bing 选项。
-- **有频率限制。** 即便是 Pro，密集请求也会被限速。正确的 `User-Agent` 头（`antigravity/hub/...`）能解锁更宽松的限额 —— 实现里已经帮你设好了。
+- **有频率限制。** 密集请求会被限速。正确的 `User-Agent` 头（`antigravity/hub/...`）能解锁更宽松的限额 —— 实现里已经帮你设好了。
 
 ## 工作原理（一段话）
 
@@ -68,7 +68,7 @@ node gemini-search.mjs "你的搜索查询"
 ## 环境要求
 
 - Node.js 18+（使用内置的 `fetch`、`http`、`crypto`）。
-- 一个 Google 账号（推荐 Pro 订阅 —— 见上文）。
+- 一个有可用 tier 的 Google 账号（见上文"谁能用"）。
 - 一次性 OAuth 登录用的浏览器。
 
 ## 作为 Claude Code skill 使用
